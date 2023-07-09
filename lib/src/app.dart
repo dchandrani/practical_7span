@@ -16,8 +16,8 @@ class TheMovieDBApp extends StatelessWidget {
         ),
         useMaterial3: true,
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
+          backgroundColor: Colors.deepPurple.shade500,
+          centerTitle: true,
           titleTextStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Colors.white,
             fontFamily: 'Nunito'

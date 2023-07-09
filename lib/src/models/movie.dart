@@ -1,5 +1,10 @@
-class Movie {
-  const Movie({
+import 'package:hive_flutter/hive_flutter.dart';
+
+part 'movie.g.dart';
+
+@HiveType(typeId: 0)
+class Movie extends HiveObject {
+  Movie({
     required this.adult,
     required this.backdropPath,
     required this.id,
@@ -11,14 +16,23 @@ class Movie {
     required this.releaseYear,
   });
 
-  final bool adult;
-  final String? backdropPath;
+  @HiveField(0)
   final int id;
+  @HiveField(2, defaultValue: false)
+  final bool adult;
+  @HiveField(3)
+  final String? backdropPath;
+  @HiveField(4)
   final String title;
+  @HiveField(5)
   final String overview;
+  @HiveField(6)
   final String? posterPath;
+  @HiveField(7)
   final String releaseDate;
+  @HiveField(8)
   final num? voteAverage;
+  @HiveField(9)
   final int releaseYear;
 
   factory Movie.fromJson(Map<String, dynamic> json) {

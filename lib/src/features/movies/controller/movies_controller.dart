@@ -4,27 +4,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/models.dart';
 import '../../../repositories/movie_db_repository.dart';
 
-part 'home_state.dart';
+part 'movies_state.dart';
 
-final homeControllerProvider =
-    StateNotifierProvider.autoDispose<HomeController, HomeState>(
-  (ref) => HomeController(
+final moviesControllerProvider =
+    StateNotifierProvider.autoDispose<MoviesController, MoviesState>(
+  (ref) => MoviesController(
     movieDBRepository: ref.read(movieDBRepositoryProvider),
-  )..fetchTrendingMovies(),
+  )..fetchMovies(),
 );
 
-class HomeController extends StateNotifier<HomeState> {
-  HomeController({
+class MoviesController extends StateNotifier<MoviesState> {
+  MoviesController({
     required MovieDBRepository movieDBRepository,
   })  : _movieDBRepository = movieDBRepository,
-        super(const HomeState());
+        super(const MoviesState());
 
   final MovieDBRepository _movieDBRepository;
 
-  Future<void> fetchTrendingMovies() async {
+  Future<void> fetchMovies() async {
     try {
       state = state.copyWith(
-        status: HomeStatus.fetchingMovies,
+        status: MoviesStatus.fetchingMovies,
         errorMessage: '',
       );
 
@@ -38,7 +38,7 @@ class HomeController extends StateNotifier<HomeState> {
       );
 
       state = state.copyWith(
-        status: HomeStatus.fetchMoviesSuccess,
+        status: MoviesStatus.fetchMoviesSuccess,
         errorMessage: '',
         trendingMovies: response.elementAt(0).results,
         popularMovies: response.elementAt(1).results,
@@ -47,7 +47,7 @@ class HomeController extends StateNotifier<HomeState> {
       );
     } catch (e) {
       state = state.copyWith(
-        status: HomeStatus.fetchMoviesFailure,
+        status: MoviesStatus.fetchMoviesFailure,
         errorMessage: e.toString(),
       );
     }

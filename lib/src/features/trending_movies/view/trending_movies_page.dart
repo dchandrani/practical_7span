@@ -49,7 +49,6 @@ class _TrendingMoviesPageState extends ConsumerState<TrendingMoviesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Trending Movies'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Consumer(
         builder: (context, ref, child) {

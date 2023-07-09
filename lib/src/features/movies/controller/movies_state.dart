@@ -1,15 +1,15 @@
-part of 'home_controller.dart';
+part of 'movies_controller.dart';
 
-enum HomeStatus {
+enum MoviesStatus {
   initial,
   fetchingMovies,
   fetchMoviesSuccess,
   fetchMoviesFailure,
 }
 
-class HomeState extends Equatable {
-  const HomeState({
-    this.status = HomeStatus.initial,
+class MoviesState extends Equatable {
+  const MoviesState({
+    this.status = MoviesStatus.initial,
     this.errorMessage = '',
     this.trendingMovies = const [],
     this.popularMovies = const [],
@@ -17,46 +17,46 @@ class HomeState extends Equatable {
     this.upcomingMovies = const [],
   });
 
-  factory HomeState.initial() => const HomeState();
+  factory MoviesState.initial() => const MoviesState();
 
-  factory HomeState.fetchingMovies() => const HomeState(
-        status: HomeStatus.fetchingMovies,
+  factory MoviesState.fetchingMovies() => const MoviesState(
+        status: MoviesStatus.fetchingMovies,
         errorMessage: '',
       );
 
-  factory HomeState.fetchMoviesSuccess({
+  factory MoviesState.fetchMoviesSuccess({
     required List<Movie> trendingMovies,
     required List<Movie> popularMovies,
     required List<Movie> topRatedMovies,
     required List<Movie> upcomingMovies,
   }) =>
-      HomeState(
-        status: HomeStatus.fetchMoviesSuccess,
+      MoviesState(
+        status: MoviesStatus.fetchMoviesSuccess,
         errorMessage: '',
         trendingMovies: trendingMovies,
       );
 
-  factory HomeState.fetchMoviesFailure(String message) => HomeState(
-        status: HomeStatus.fetchMoviesFailure,
+  factory MoviesState.fetchMoviesFailure(String message) => MoviesState(
+        status: MoviesStatus.fetchMoviesFailure,
         errorMessage: message,
       );
 
-  final HomeStatus status;
+  final MoviesStatus status;
   final String errorMessage;
   final List<Movie> trendingMovies;
   final List<Movie> popularMovies;
   final List<Movie> topRatedMovies;
   final List<Movie> upcomingMovies;
 
-  HomeState copyWith({
-    HomeStatus? status,
+  MoviesState copyWith({
+    MoviesStatus? status,
     String? errorMessage,
     List<Movie>? trendingMovies,
     List<Movie>? popularMovies,
     List<Movie>? topRatedMovies,
     List<Movie>? upcomingMovies,
   }) {
-    return HomeState(
+    return MoviesState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       trendingMovies: trendingMovies ?? this.trendingMovies,

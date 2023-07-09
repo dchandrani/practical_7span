@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../api/api.dart' show baseImageUrl;
 import '../../../models/models.dart' show Movie;
+import '../../../widgets/widgets.dart';
+import '../../favorites/favorites.dart';
 
-class MovieDetailPage extends StatelessWidget {
+class MovieDetailPage extends StatefulWidget {
   const MovieDetailPage({
     super.key,
     required this.movie,
@@ -13,11 +16,15 @@ class MovieDetailPage extends StatelessWidget {
   final Movie movie;
 
   @override
+  State<MovieDetailPage> createState() => _MovieDetailPageState();
+}
+
+class _MovieDetailPageState extends State<MovieDetailPage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(movie.title),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        title: Text(widget.movie.title),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -26,28 +33,60 @@ class MovieDetailPage extends StatelessWidget {
               AspectRatio(
                 aspectRatio: 1.5,
                 child: CachedNetworkImage(
-                  imageUrl: '$baseImageUrl${movie.backdropPath}',
+                  imageUrl: '$baseImageUrl${widget.movie.backdropPath}',
                   fit: BoxFit.cover,
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(14),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '${movie.title} (${movie.releaseYear})',
-                      style: Theme.of(context).textTheme.titleLarge,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            '${widget.movie.title} (${widget.movie.releaseYear})',
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Consumer(
+                          builder: (context, ref, child) {
+                            final favoriteMovies = ref
+                                .watch(favoritesControllerProvider)
+                                .favoriteMovies;
+
+                            final bool isBookmarked = favoriteMovies
+                                .any((e) => e.id == widget.movie.id);
+
+                            return BookmarkToggle(
+                              isBookmarked: isBookmarked,
+                              onBookmarkToggle: (isBookmarked) {
+                                if (isBookmarked) {
+                                  ref
+                                      .watch(favoritesControllerProvider.notifier)
+                                      .addFavorite(widget.movie);
+                                } else {
+                                  ref
+                                      .watch(favoritesControllerProvider.notifier)
+                                      .removeFavorite(widget.movie);
+                                }
+                              },
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 14),
+                    const SizedBox(height: 8),
                     Text(
                       'Overview',
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      movie.overview,
+                      widget.movie.overview,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             wordSpacing: 1.4,
                           ),
@@ -59,12 +98,12 @@ class MovieDetailPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      movie.releaseDate,
+                      widget.movie.releaseDate,
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     const SizedBox(height: 14),
-                    if (movie.voteAverage != null &&
-                        movie.voteAverage! > 0) ...[
+                    if (widget.movie.voteAverage != null &&
+                        widget.movie.voteAverage! > 0) ...[
                       Text(
                         'Rating',
                         style: Theme.of(context).textTheme.titleMedium,
@@ -79,7 +118,7 @@ class MovieDetailPage extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            '${movie.voteAverage?.toStringAsFixed(1)}',
+                            '${widget.movie.voteAverage?.toStringAsFixed(1)}',
                             style:
                                 Theme.of(context).textTheme.bodyLarge?.copyWith(
                                       fontSize: 16,

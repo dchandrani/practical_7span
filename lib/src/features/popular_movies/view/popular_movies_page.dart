@@ -49,7 +49,6 @@ class _PopularMoviesPageState extends ConsumerState<PopularMoviesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Popular Movies'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Consumer(
         builder: (context, ref, child) {
