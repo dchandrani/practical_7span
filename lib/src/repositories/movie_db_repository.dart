@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../api/api.dart';
@@ -50,10 +51,15 @@ class MovieDBRepository {
   }
 
   Future<MoviesResponseModel> searchMovies(String query) async {
-    final response = await _apiClient.getRequest(
-      'search/movie?query=$query',
-    );
+    try {
+      final response = await _apiClient.getRequest(
+        'search/movie?query=$query',
+      );
 
-    return MoviesResponseModel.fromJson(response);
+      return MoviesResponseModel.fromJson(response);
+    } catch (e) {
+      debugPrint('MovieDBRepository.searchMovies - $e');
+      throw Exception('Failed to load data');
+    }
   }
 }

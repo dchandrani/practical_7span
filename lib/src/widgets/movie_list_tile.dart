@@ -37,6 +37,8 @@ class MovieListTile extends StatelessWidget {
                   child: CachedNetworkImage(
                     imageUrl: '$baseImageUrl${movie.posterPath}',
                     fit: BoxFit.cover,
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                   ),
                 ),
               ),
@@ -63,7 +65,8 @@ class MovieListTile extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Visibility(
-                      visible: movie.voteAverage != null,
+                      visible:
+                          movie.voteAverage != null && movie.voteAverage! > 0,
                       child: Row(
                         children: [
                           const Icon(

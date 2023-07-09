@@ -35,6 +35,8 @@ class MovieListItem extends StatelessWidget {
                   CachedNetworkImage(
                     imageUrl: '$baseImageUrl${movie.posterPath}',
                     fit: BoxFit.cover,
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                   ),
                   AverageVoteCount(
                     voteAverage: movie.voteAverage,
