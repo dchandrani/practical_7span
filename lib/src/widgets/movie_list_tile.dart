@@ -48,7 +48,7 @@ class MovieListTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      movie.releaseDate.split('-').first,
+                      movie.releaseYear.toString(),
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     const SizedBox(height: 4),

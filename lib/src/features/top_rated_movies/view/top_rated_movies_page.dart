@@ -66,7 +66,7 @@ class _TopRatedMoviesPageState extends ConsumerState<TopRatedMoviesPage> {
           return NotificationListener<UserScrollNotification>(
             onNotification: _onScrollNotification,
             child: ListView.separated(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(16),
               itemCount: itemCount,
               itemBuilder: (context, index) {
                 if (index == topRatedMovies.length) {
