@@ -4,11 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
 const String baseUrl = 'https://api.themoviedb.org/3/';
-const String apiKey = '19e1a413bc3bada46bef728f543a7e24';
-
-Uri getUri(String path) {
-  return Uri.parse('$baseUrl$path?api_key=$apiKey');
-}
+const String baseImageUrl = 'https://image.tmdb.org/t/p/w500';
+const String accessToken =
+    'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxOWUxYTQxM2JjM2JhZGE0NmJlZjcyOGY1NDNhN2UyNCIsInN1YiI6IjVhODE3MGUxOTI1MTQxNDBmZTAyZDM3ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.6MSuYwTJEXcmqcyGGq0WNYddoWREFtPXWdbOiyPrArU';
 
 final httpClientProvider = Provider(
   (ref) => http.Client(),
@@ -27,9 +25,19 @@ class ApiClient {
 
   final http.Client _client;
 
+  Map<String, String> get _headers {
+    final headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+
+    return headers;
+  }
+
   Future<dynamic> getRequest(String path) async {
-    final uri = getUri(path);
-    final response = await _client.get(uri);
+    final uri = Uri.parse('$baseUrl$path');
+    final response = await _client.get(uri, headers: _headers);
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
