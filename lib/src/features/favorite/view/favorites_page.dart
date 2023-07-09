@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class BookmarksPage extends StatelessWidget {
-  const BookmarksPage({super.key});
+class FavoritesPage extends StatelessWidget {
+  const FavoritesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bookmarks'),
+        title: Text('Favorites Page'),
       ) ,
       body: Center(
-        child: Text('Bookmarks Page'),
+        child: Text('Favorites Page'),
       ),
     );
   }

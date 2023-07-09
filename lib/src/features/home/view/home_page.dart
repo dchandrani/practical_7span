@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:practical_7span/src/features/search_movies/search_movies.dart';
 
-import '../../bookmarks/bookmarks.dart';
-import '../../movies/movies.dart';
+import '../../search_movies/search_movies.dart' show SearchMoviesPage;
+import '../../favorite/favorite.dart' show FavoritesPage;
+import '../../movies/movies.dart' show MoviesPage;
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -23,7 +23,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         children: const [
           MoviesPage(),
           SearchMoviesPage(),
-          BookmarksPage(),
+          FavoritesPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../routing/routing.dart';
-import '../../home/home.dart';
+import '../../home/home.dart' show MoviesListWithTitle;
+import '../movies.dart' show MoviesStatus, moviesControllerProvider;
 
 class MoviesPage extends StatelessWidget {
   const MoviesPage({super.key});
@@ -20,16 +21,16 @@ class MoviesPage extends StatelessWidget {
           Expanded(
             child: Consumer(
               builder: (context, ref, child) {
-                final homeState = ref.watch(homeControllerProvider);
+                final homeState = ref.watch(moviesControllerProvider);
 
                 final status = homeState.status;
 
                 switch (status) {
-                  case HomeStatus.fetchingMovies:
+                  case MoviesStatus.fetchingMovies:
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
-                  case HomeStatus.fetchMoviesFailure:
+                  case MoviesStatus.fetchMoviesFailure:
                     return const Center(
                       child: Text('Something went wrong!'),
                     );
