@@ -1,11 +1,16 @@
-import 'package:flutter/material.dart' show MaterialPageRoute, Route, RouteSettings;
+import 'package:flutter/material.dart'
+    show MaterialPageRoute, Route, RouteSettings;
 
 import '../features/home/home.dart' show HomePage;
-import '../features/movie_detail/movie_detail.dart';
+import '../features/movie_detail/movie_detail.dart' show MovieDetailPage;
 import '../features/popular_movies/popular_movies.dart' show PopularMoviesPage;
-import '../features/top_rated_movies/top_rated_movies.dart' show TopRatedMoviesPage;
-import '../features/trending_movies/trending_movies.dart' show TrendingMoviesPage;
-import '../features/upcoming_movies/upcoming_movies.dart' show UpcomingMoviesPage;
+import '../features/search_movies/search_movies.dart' show SearchMoviesPage;
+import '../features/top_rated_movies/top_rated_movies.dart'
+    show TopRatedMoviesPage;
+import '../features/trending_movies/trending_movies.dart'
+    show TrendingMoviesPage;
+import '../features/upcoming_movies/upcoming_movies.dart'
+    show UpcomingMoviesPage;
 import '../models/models.dart' show Movie;
 
 class Routing {
@@ -15,6 +20,7 @@ class Routing {
   static const String topRatedMoviesPage = '/top-rated-movies';
   static const String upcomingMoviesPage = '/upcoming-movies';
   static const String movieDetailPage = '/movie-detail';
+  static const String searchMoviesPage = '/search-movies';
 
   static Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -46,11 +52,15 @@ class Routing {
             upcomingMovies: settings.arguments as List<Movie>,
           ),
         );
-        case movieDetailPage:
+      case movieDetailPage:
         return MaterialPageRoute(
           builder: (context) => MovieDetailPage(
             movie: settings.arguments as Movie,
           ),
+        );
+      case searchMoviesPage:
+        return MaterialPageRoute(
+          builder: (context) => const SearchMoviesPage(),
         );
       default:
         throw Exception('Route not found');

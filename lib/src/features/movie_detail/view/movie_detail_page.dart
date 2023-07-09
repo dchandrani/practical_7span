@@ -27,6 +27,7 @@ class MovieDetailPage extends StatelessWidget {
                 imageUrl: '$baseImageUrl${movie.backdropPath}',
                 fit: BoxFit.cover,
                 height: 240,
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
               Padding(
                 padding: const EdgeInsets.all(16),

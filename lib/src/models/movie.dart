@@ -23,7 +23,7 @@ class Movie {
 
   factory Movie.fromJson(Map<String, dynamic> json) {
     final releaseDate = json['release_date'] as String;
-    final releaseYear = int.parse(releaseDate.split('-').first);
+    final releaseYear = int.tryParse(releaseDate.split('-').first) ?? 2000;
 
     return Movie(
       adult: json['adult'] as bool,

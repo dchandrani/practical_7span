@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../routing/routing.dart';
+
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({super.key});
 
@@ -7,7 +9,7 @@ class HomeAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-        left: 12.0,
+        left: 16.0,
         right: 4.0,
         top: MediaQuery.of(context).padding.top,
         bottom: 8.0,
@@ -27,14 +29,19 @@ class HomeAppBar extends StatelessWidget {
           const Text(
             'TMDb App',
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               fontFamily: 'Nunito',
             ),
           ),
           const Spacer(),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                Routing.searchMoviesPage,
+              );
+            },
             icon: const Icon(Icons.search),
           ),
         ],
