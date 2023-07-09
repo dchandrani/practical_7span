@@ -1,29 +1,33 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:practical_7span/main.dart';
+import 'package:practical_7span/src/repositories/movie_db_repository.dart';
 
 import '../../../models/models.dart';
 
 part 'favorites_state.dart';
 
+final favoritesBoxProvider = Provider<Box<Movie>>((ref) {
+  throw UnimplementedError();
+});
+
 final favoritesControllerProvider =
     StateNotifierProvider.autoDispose<FavoritesController, FavoritesState>(
   (ref) => FavoritesController(
-    favoritesBox: ref.read(favoritesBoxProvider),
+    movieDBRepository: ref.read(movieDBRepositoryProvider),
   )..init(),
 );
 
 class FavoritesController extends StateNotifier<FavoritesState> {
   FavoritesController({
-    required Box<Movie> favoritesBox,
-  })  : _favoritesBox = favoritesBox,
+    required MovieDBRepository movieDBRepository,
+  })  : _movieDBRepository = movieDBRepository,
         super(const FavoritesState());
 
-  final Box<Movie> _favoritesBox;
+  final MovieDBRepository _movieDBRepository;
 
   void init() {
-    final favoriteMovies = _favoritesBox.values.toList();
+    final List<Movie> favoriteMovies = _movieDBRepository.favoriteMovies;
 
     state = state.copyWith(
       status: FavoritesStatus.initial,
@@ -35,8 +39,8 @@ class FavoritesController extends StateNotifier<FavoritesState> {
     return state.favoriteMovies.any((e) => e.id == movie.id);
   }
 
-  Future<void> addFavorite(Movie movie) async {
-    await _favoritesBox.add(movie);
+  void addFavorite(Movie movie) {
+    _movieDBRepository.addFavorite(movie);
 
     state = state.copyWith(
       status: FavoritesStatus.addToFavoriteSuccess,
@@ -44,11 +48,8 @@ class FavoritesController extends StateNotifier<FavoritesState> {
     );
   }
 
-  Future<void> removeFavorite(Movie movie) async {
-    final Movie favoriteMovie =
-        _favoritesBox.values.firstWhere((element) => element.id == movie.id);
-
-    await favoriteMovie.delete();
+  void removeFavorite(Movie movie) {
+    _movieDBRepository.removeFavorite(movie);
 
     state = state.copyWith(
       status: FavoritesStatus.removeFromFavoriteSuccess,

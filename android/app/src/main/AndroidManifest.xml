@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="practical_7span"
+        android:label="TMDb App"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
