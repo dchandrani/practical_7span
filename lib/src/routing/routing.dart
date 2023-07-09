@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' show MaterialPageRoute, Route, RouteSettings;
 
 import '../features/home/home.dart' show HomePage;
+import '../features/movie_detail/movie_detail.dart';
 import '../features/popular_movies/popular_movies.dart' show PopularMoviesPage;
 import '../features/top_rated_movies/top_rated_movies.dart' show TopRatedMoviesPage;
 import '../features/trending_movies/trending_movies.dart' show TrendingMoviesPage;
@@ -13,6 +14,7 @@ class Routing {
   static const String popularMoviesPage = '/popular-movies';
   static const String topRatedMoviesPage = '/top-rated-movies';
   static const String upcomingMoviesPage = '/upcoming-movies';
+  static const String movieDetailPage = '/movie-detail';
 
   static Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -42,6 +44,12 @@ class Routing {
         return MaterialPageRoute(
           builder: (context) => UpcomingMoviesPage(
             upcomingMovies: settings.arguments as List<Movie>,
+          ),
+        );
+        case movieDetailPage:
+        return MaterialPageRoute(
+          builder: (context) => MovieDetailPage(
+            movie: settings.arguments as Movie,
           ),
         );
       default:

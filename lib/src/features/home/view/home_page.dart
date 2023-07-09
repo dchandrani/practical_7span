@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -41,7 +40,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                     final upcomingMovies = homeState.upcomingMovies;
                     final topRatedMovies = homeState.topRatedMovies;
 
-
                     return ListView(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 12.0,
@@ -61,16 +59,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                         ),
                         const SizedBox(height: 16.0),
                         MoviesListWithTitle(
-                          title: 'Popular Movies',
-                          movies: popularMovies,
-                          onViewAllTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              Routing.popularMoviesPage,
-                              arguments: popularMovies,
-                            );
-                          }
-                        ),
+                            title: 'Popular Movies',
+                            movies: popularMovies,
+                            onViewAllTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                Routing.popularMoviesPage,
+                                arguments: popularMovies,
+                              );
+                            }),
                         const SizedBox(height: 16.0),
                         MoviesListWithTitle(
                           title: 'Upcoming Movies',

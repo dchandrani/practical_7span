@@ -8,6 +8,7 @@ class Movie {
     required this.posterPath,
     required this.releaseDate,
     required this.voteAverage,
+    required this.releaseYear,
   });
 
   final bool adult;
@@ -18,8 +19,12 @@ class Movie {
   final String? posterPath;
   final String releaseDate;
   final num? voteAverage;
+  final int releaseYear;
 
   factory Movie.fromJson(Map<String, dynamic> json) {
+    final releaseDate = json['release_date'] as String;
+    final releaseYear = int.parse(releaseDate.split('-').first);
+
     return Movie(
       adult: json['adult'] as bool,
       backdropPath: json['backdrop_path'] as String?,
@@ -27,8 +32,9 @@ class Movie {
       title: json['title'] as String,
       overview: json['overview'] as String,
       posterPath: json['poster_path'] as String?,
-      releaseDate: json['release_date'] as String,
+      releaseDate: releaseDate,
       voteAverage: json['vote_average'] as num?,
+      releaseYear: releaseYear,
     );
   }
 
