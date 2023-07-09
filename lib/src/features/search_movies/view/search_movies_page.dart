@@ -34,24 +34,31 @@ class _SearchMoviesPageState extends ConsumerState<SearchMoviesPage> {
                   }
 
                   if (searchState.status == SearchStatus.searchFailure) {
-                    return const Center(
-                      child: Text('Something went wrong!'),
+                    return Center(
+                      child: Text(
+                        'Something went wrong!',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
                     );
                   }
 
-                  return const Center(
-                    child: Text('No movies found!'),
+                  return Center(
+                    child: Text(
+                      'No movies found!',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
                   );
                 }
 
                 return ListView.separated(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(16),
                   itemBuilder: (context, index) {
                     final movie = movies[index];
 
                     return MovieListTile(movie: movie);
                   },
-                  separatorBuilder: (context, index) => const SizedBox(height: 16),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 16),
                   itemCount: itemCount,
                 );
               },

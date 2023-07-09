@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../api/api.dart' show baseImageUrl;
 import '../../../models/models.dart' show Movie;
 import '../../../widgets/widgets.dart';
+import '../../favorites/favorites.dart';
 
 class MovieDetailPage extends StatefulWidget {
   const MovieDetailPage({
@@ -18,8 +20,6 @@ class MovieDetailPage extends StatefulWidget {
 }
 
 class _MovieDetailPageState extends State<MovieDetailPage> {
-  bool isBookmarked = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,23 +52,28 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        BookmarkToggle(
-                          isBookmarked: isBookmarked,
-                          onBookmarkToggle: (isBookmarked) {
-                            setState(() {
-                              this.isBookmarked = isBookmarked;
-                            });
-                            ScaffoldMessenger.of(context)..removeCurrentSnackBar()..showSnackBar(
-                              SnackBar(
-                                content: Text(isBookmarked
-                                    ? 'Saved to bookmarks'
-                                    : 'Removed from bookmarks'),
-                                behavior: SnackBarBehavior.fixed,
-                                backgroundColor: Colors.grey.shade800,
-                                duration: const Duration(
-                                  seconds: 1,
-                                ),
-                              ),
+                        Consumer(
+                          builder: (context, ref, child) {
+                            final favoriteMovies = ref
+                                .watch(favoritesControllerProvider)
+                                .favoriteMovies;
+
+                            final bool isBookmarked = favoriteMovies
+                                .any((e) => e.id == widget.movie.id);
+
+                            return BookmarkToggle(
+                              isBookmarked: isBookmarked,
+                              onBookmarkToggle: (isBookmarked) {
+                                if (isBookmarked) {
+                                  ref
+                                      .watch(favoritesControllerProvider.notifier)
+                                      .addFavorite(widget.movie);
+                                } else {
+                                  ref
+                                      .watch(favoritesControllerProvider.notifier)
+                                      .removeFavorite(widget.movie);
+                                }
+                              },
                             );
                           },
                         ),

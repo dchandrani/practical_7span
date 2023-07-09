@@ -37,8 +37,9 @@ class _SearchAppBarState extends ConsumerState<SearchAppBar> {
         top: MediaQuery.of(context).padding.top,
         left: 10,
         right: 10,
-        bottom: 10,
+        bottom: 8,
       ),
+      color: Theme.of(context).appBarTheme.backgroundColor,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
