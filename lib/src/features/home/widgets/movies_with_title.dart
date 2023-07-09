@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../models/models.dart' show Movie;
-import '../../../routing/routing.dart';
-import '../../../widgets/widgets.dart' show MovieListItem;
-import '../home.dart' show MoviesTitle;
+import '../home.dart' show MoviesTitle, MovieListItem;
 
 class MoviesListWithTitle extends StatelessWidget {
   const MoviesListWithTitle({

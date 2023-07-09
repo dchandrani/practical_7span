@@ -1,10 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../api/api.dart';
-import '../../../models/models.dart';
-import '../trending_movies.dart';
+import '../../../models/models.dart' show Movie;
+import '../../../widgets/widgets.dart' show MovieListTile;
+import '../trending_movies.dart'
+    show TrendingMoviesStatus, trendingMoviesControllerProvider;
 
 class TrendingMoviesPage extends ConsumerStatefulWidget {
   const TrendingMoviesPage({
@@ -31,7 +31,10 @@ class _TrendingMoviesPageState extends ConsumerState<TrendingMoviesPage> {
   }
 
   bool _onScrollNotification(notification) {
-    if (notification.metrics.pixels == notification.metrics.maxScrollExtent) {
+    final bool hasReachedEnd = notification.metrics.pixels >
+        (notification.metrics.maxScrollExtent - 280);
+
+    if (hasReachedEnd) {
       ref.read(trendingMoviesControllerProvider.notifier).fetchTrendingMovies();
     }
     return true;
@@ -41,14 +44,13 @@ class _TrendingMoviesPageState extends ConsumerState<TrendingMoviesPage> {
   Widget build(BuildContext context) {
     ref.listen(
       trendingMoviesControllerProvider,
-      (previous, next) {
-        print('_TrendingMoviesPageState.build -> ${next.status}');
-      },
+      (previous, next) {},
     );
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Trending Movies'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Consumer(
         builder: (context, ref, child) {
@@ -57,76 +59,30 @@ class _TrendingMoviesPageState extends ConsumerState<TrendingMoviesPage> {
 
           final trendingMovies = trendingMoviesState.trendingMovies;
 
+          final bool hasReachedMax = trendingMoviesState.hasReachedMax;
+
+          final itemCount =
+              hasReachedMax ? trendingMovies.length : trendingMovies.length + 1;
+
           return NotificationListener<UserScrollNotification>(
             onNotification: _onScrollNotification,
             child: ListView.separated(
               padding: const EdgeInsets.all(10),
-              itemCount: trendingMovies.length,
+              itemCount: itemCount,
               itemBuilder: (context, index) {
+                if (index == trendingMovies.length) {
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 18.0),
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+
                 final movie = trendingMovies[index];
 
-                return Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: CachedNetworkImage(
-                            imageUrl: '$baseImageUrl${movie.posterPath}',
-                            fit: BoxFit.cover,
-                            height: 140,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Flexible(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                movie.releaseDate.split('-').first,
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                movie.title,
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-
-                              const SizedBox(height: 4),
-                              Text(
-                                movie.overview,
-                                style: Theme.of(context).textTheme.bodySmall,
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              const SizedBox(height: 4),
-                              Visibility(
-                                visible: movie.voteAverage != null,
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.star_outlined,
-                                      size: 16,
-                                      color: Colors.yellow,
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      movie.voteAverage!.toStringAsFixed(2),
-                                      style: Theme.of(context).textTheme.bodySmall,
-                                      maxLines: 3,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                return MovieListTile(
+                  movie: movie,
                 );
               },
               separatorBuilder: (context, index) => const SizedBox(height: 16),

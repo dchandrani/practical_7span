@@ -30,6 +30,10 @@ class TopRatedMoviesController extends StateNotifier<TopRatedMoviesState> {
 
   Future<void> fetchTopRatedMovies() async {
     try {
+      if (state.status == TopRatedMoviesStatus.fetchingMoreTopRatedMovies) {
+        return;
+      }
+
       state = state.copyWith(
         status: TopRatedMoviesStatus.fetchingMoreTopRatedMovies,
         errorMessage: '',
@@ -39,10 +43,12 @@ class TopRatedMoviesController extends StateNotifier<TopRatedMoviesState> {
       final response = await _movieDBRepository.fetchTopRatedMovies(
         page: page,
       );
+
       state = state.copyWith(
         status: TopRatedMoviesStatus.fetchMoreTopRatedMoviesSuccess,
         topRatedMovies: [...state.topRatedMovies, ...response.results],
         page: page + 1,
+        hasReachedMax: page == response.totalPages,
       );
     } catch (e) {
       state = state.copyWith(

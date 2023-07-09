@@ -30,6 +30,10 @@ class UpcomingMoviesController extends StateNotifier<UpcomingMoviesState> {
 
   Future<void> fetchUpcomingMovies() async {
     try {
+      if (state.status == UpcomingMoviesStatus.fetchingMoreUpcomingMovies) {
+        return;
+      }
+
       state = state.copyWith(
         status: UpcomingMoviesStatus.fetchingMoreUpcomingMovies,
         errorMessage: '',
@@ -39,10 +43,12 @@ class UpcomingMoviesController extends StateNotifier<UpcomingMoviesState> {
       final response = await _movieDBRepository.fetchUpcomingMovies(
         page: page,
       );
+
       state = state.copyWith(
         status: UpcomingMoviesStatus.fetchMoreUpcomingMoviesSuccess,
         upcomingMovies: [...state.upcomingMovies, ...response.results],
         page: page + 1,
+        hasReachedMax: page == response.totalPages,
       );
     } catch (e) {
       state = state.copyWith(
