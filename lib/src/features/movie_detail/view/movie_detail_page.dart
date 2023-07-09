@@ -23,11 +23,13 @@ class MovieDetailPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              CachedNetworkImage(
-                imageUrl: '$baseImageUrl${movie.backdropPath}',
-                fit: BoxFit.cover,
-                height: 240,
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+              AspectRatio(
+                aspectRatio: 1.5,
+                child: CachedNetworkImage(
+                  imageUrl: '$baseImageUrl${movie.backdropPath}',
+                  fit: BoxFit.cover,
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(16),

@@ -3,8 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../models/models.dart' show Movie;
 import '../../../widgets/widgets.dart' show MovieListTile;
-import '../trending_movies.dart'
-    show TrendingMoviesStatus, trendingMoviesControllerProvider;
+import '../trending_movies.dart' show trendingMoviesControllerProvider;
 
 class TrendingMoviesPage extends ConsumerStatefulWidget {
   const TrendingMoviesPage({
@@ -67,7 +66,7 @@ class _TrendingMoviesPageState extends ConsumerState<TrendingMoviesPage> {
           return NotificationListener<UserScrollNotification>(
             onNotification: _onScrollNotification,
             child: ListView.separated(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(16),
               itemCount: itemCount,
               itemBuilder: (context, index) {
                 if (index == trendingMovies.length) {

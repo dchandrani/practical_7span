@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'features/home/home.dart';
 import 'routing/routing.dart';
 
 class TheMovieDBApp extends StatelessWidget {

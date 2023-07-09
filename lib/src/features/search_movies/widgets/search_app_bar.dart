@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../search_movies.dart'
-    show SearchStatus, searchMoviesControllerProvider;
+import '../search_movies.dart' show searchMoviesControllerProvider;
 
 class SearchAppBar extends ConsumerStatefulWidget {
   const SearchAppBar({super.key});
@@ -33,8 +32,14 @@ class _SearchAppBarState extends ConsumerState<SearchAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return Container(
+      padding: EdgeInsets.only(
+        top: MediaQuery.of(context).padding.top,
+        left: 10,
+        right: 10,
+        bottom: 10,
+      ),
+      color: Theme.of(context).colorScheme.primary,
       child: Row(
         children: [
           IconButton(
@@ -61,46 +66,17 @@ class _SearchAppBarState extends ConsumerState<SearchAppBar> {
                   ref.read(searchMoviesControllerProvider.notifier).reset();
                 }
               },
+              cursorColor: Colors.grey,
+              autofocus: true,
               decoration: InputDecoration(
                 hintText: 'Search movies',
-                border: const OutlineInputBorder(),
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 8.0,
-                  horizontal: 16.0,
-                ),
-                prefixIcon: const Icon(
-                  Icons.search,
-                  color: Colors.grey,
+                border: InputBorder.none,
+                contentPadding: const EdgeInsets.only(
+                  top: 15.0,
                 ),
                 suffixIcon: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Consumer(
-                      builder: (context, ref, child) {
-                        final searchState =
-                            ref.watch(searchMoviesControllerProvider);
-
-                        if (searchState.status == SearchStatus.searching) {
-                          return const Row(
-                            children: [
-                              SizedBox(width: 10.0),
-                              Center(
-                                child: SizedBox(
-                                  height: 18.0,
-                                  width: 18.0,
-                                  child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation(Colors.grey),
-                                    strokeWidth: 2.0,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        }
-
-                        return const SizedBox.shrink();
-                      },
-                    ),
                     IconButton(
                       onPressed: () {
                         _searchController.clear();
