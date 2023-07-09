@@ -39,15 +39,12 @@ class _SearchAppBarState extends ConsumerState<SearchAppBar> {
         right: 10,
         bottom: 10,
       ),
-      color: Theme.of(context).colorScheme.primary,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(Icons.arrow_back_ios),
-          ),
+          const SizedBox(width: 10.0),
+          const Icon(Icons.search_rounded),
+          const SizedBox(width: 12.0),
           Expanded(
             child: TextField(
               controller: _searchController,
@@ -67,10 +64,17 @@ class _SearchAppBarState extends ConsumerState<SearchAppBar> {
                 }
               },
               cursorColor: Colors.grey,
-              autofocus: true,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Colors.white,
+                fontSize: 16.0,
+              ),
               decoration: InputDecoration(
                 hintText: 'Search movies',
                 border: InputBorder.none,
+                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.grey,
+                      fontSize: 16.0,
+                    ),
                 contentPadding: const EdgeInsets.only(
                   top: 15.0,
                 ),

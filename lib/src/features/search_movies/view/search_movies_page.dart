@@ -18,7 +18,6 @@ class _SearchMoviesPageState extends ConsumerState<SearchMoviesPage> {
       body: Column(
         children: [
           const SearchAppBar(),
-          const SizedBox(height: 8.0),
           Expanded(
             child: Consumer(
               builder: (context, ref, child) {

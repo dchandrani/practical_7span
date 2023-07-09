@@ -49,7 +49,6 @@ class _TopRatedMoviesPageState extends ConsumerState<TopRatedMoviesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Top Rated Movies'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Consumer(
         builder: (context, ref, child) {

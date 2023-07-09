@@ -49,7 +49,6 @@ class _UpcomingMoviesPageState extends ConsumerState<UpcomingMoviesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Upcoming Movies'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Consumer(
         builder: (context, ref, child) {
